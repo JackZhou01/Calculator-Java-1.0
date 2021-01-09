@@ -1,0 +1,202 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class Calculator implements ActionListener {
+
+	JFrame calculator = new JFrame("Calculator 1.0");
+	JTextField textbar = new JTextField();
+	JButton[] numbers = new JButton[12]; // {0,1,2,3,4,5,6,7,8,9,e,pi}
+	
+	JButton[] functions = new JButton[16]; 
+	JButton add, sub, mul, div;
+	JButton sin, cos, tan, ln, log;
+	JButton expt, sqrt, clear, del, equ;
+	JButton deci, fact;
+	
+	JPanel panel;
+	
+	double num1 = 0, num2 = 0, result = 0;
+	String operation;
+	
+	Font textBarFont = new Font("Times New Roman",Font.PLAIN,24);
+	Font buttonFont = new Font("Times New Roman",Font.PLAIN,18);
+	
+	public Calculator() {
+		// initialize calculator
+		calculator.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		calculator.setSize(500, 520);
+		calculator.setLayout(null);
+		
+		// Setting display tab
+		textbar = new JTextField();
+		textbar.setBounds(40,20,400,50);
+		textbar.setFont(textBarFont);
+		textbar.setEditable(false);
+		
+		makeButtons();
+		
+		panel = new JPanel();
+		panel.setBounds(40, 90, 400, 360);
+		panel.setLayout(new GridLayout(5,5,10,10));
+		//panel.setBackground(Color.BLUE);
+		
+		
+		panel.add(fact);
+		panel.add(sin);
+		panel.add(cos);
+		panel.add(tan);
+		panel.add(clear);
+		
+		panel.add(ln);
+		panel.add(numbers[1]);
+		panel.add(numbers[2]);
+		panel.add(numbers[3]);
+		panel.add(div);
+		
+		panel.add(log);
+		panel.add(numbers[4]);
+		panel.add(numbers[5]);
+		panel.add(numbers[6]);
+		panel.add(mul);
+		
+		panel.add(sqrt);
+		panel.add(numbers[7]);
+		panel.add(numbers[8]);
+		panel.add(numbers[9]);
+		panel.add(sub);
+		
+		panel.add(expt);
+		panel.add(numbers[0]);
+		panel.add(deci);
+		panel.add(equ);
+		panel.add(add);
+		
+		calculator.add(panel);
+		calculator.add(textbar);
+		calculator.setVisible(true);
+	}
+	
+	public void makeButtons() {
+		// Numbers buttons
+		for (int i = 0; i < 10; i ++) {
+			numbers[i] = new JButton(Integer.toString(i));
+			numbers[i].addActionListener(this);
+			numbers[i].setFont(buttonFont);
+			numbers[i].setFocusable(false);
+		}
+				
+		numbers[10] = new JButton("e");
+		numbers[10].addActionListener(this);
+		numbers[10].setFont(buttonFont);
+		numbers[10].setFocusable(false);
+				
+		numbers[11] = new JButton("pi");
+		numbers[11].addActionListener(this);
+		numbers[11].setFont(buttonFont);
+		numbers[11].setFocusable(false);
+				
+		// Functions buttons
+		add = new JButton("+");
+		sub = new JButton("-");
+		mul = new JButton("*");
+		div = new JButton("/");
+		sin = new JButton("sin");
+		cos = new JButton("cos");
+		tan = new JButton("tan");
+		ln = new JButton("ln");
+		log = new JButton("log");	
+		expt = new JButton("^");
+		sqrt = new JButton("sqrt");
+		deci = new JButton(".");
+		fact = new JButton("x!");	
+		clear = new JButton("AC");
+		del = new JButton("del");
+		equ = new JButton("=");
+		
+		functions[0] = add;
+		functions[1] = sub;
+		functions[2] = mul;
+		functions[3] = div;
+		functions[4] = sin;
+		functions[5] = cos;
+		functions[6] = tan;
+		functions[7] = ln;
+		functions[8] = log;
+		functions[9] = expt;
+		functions[10] = sqrt;
+		functions[11] = deci;
+		functions[12] = fact;
+		functions[13] = clear;
+		functions[14] = del;
+		functions[15] = equ;
+		
+		for (int i = 0; i < 16; i ++) {
+			functions[i].addActionListener(this);
+			functions[i].setFont(buttonFont);
+			functions[i].setFocusable(false);
+		}
+	}
+	
+	public static void main(String args[]) {
+		new Calculator();
+		
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		
+		for(int i = 0; i < 10; i++) {
+			if (e.getSource() == numbers[i]) {
+				if(textbar.getText().equals("Err")) {
+					textbar.setText(Integer.toString(i));
+				} else {
+					textbar.setText(textbar.getText().concat(Integer.toString(i)));
+				}
+			}
+		}
+		
+		if(e.getSource() == add) {
+			try {
+				num1 = Double.parseDouble(textbar.getText());
+				operation = "+";
+				textbar.setText("");
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		if(e.getSource() == sub) {
+			try {
+				num1 = Double.parseDouble(textbar.getText());
+				operation = "+";
+				textbar.setText("");
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		if(e.getSource() == mul) {
+			try {
+				num1 = Double.parseDouble(textbar.getText());
+				operation = "+";
+				textbar.setText("");
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		if(e.getSource() == div) {
+			try {
+				num1 = Double.parseDouble(textbar.getText());
+				operation = "+";
+				textbar.setText("");
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		
+		if(e.getSource() == deci) {
+			textbar.setText(textbar.getText().concat("."));
+		}
+	}
+	
+
+}
