@@ -145,6 +145,7 @@ public class Calculator implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		
+		// display input 
 		for(int i = 0; i < 10; i++) {
 			if (e.getSource() == numbers[i]) {
 				if(textbar.getText().equals("Err")) {
@@ -155,6 +156,7 @@ public class Calculator implements ActionListener {
 			}
 		}
 		
+		// add 
 		if(e.getSource() == add) {
 			try {
 				num1 = Double.parseDouble(textbar.getText());
@@ -164,34 +166,75 @@ public class Calculator implements ActionListener {
 				textbar.setText("Err");
 			}
 		}
+		// subtract 
 		if(e.getSource() == sub) {
 			try {
-				num1 = Double.parseDouble(textbar.getText());
-				operation = "+";
-				textbar.setText("");
+				if (textbar.getText().equals("")) {
+					textbar.setText("-");
+				} else {
+					num1 = Double.parseDouble(textbar.getText());
+					operation = "-";
+					textbar.setText("");
+				}
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
 		}
+		//multiply 
 		if(e.getSource() == mul) {
 			try {
 				num1 = Double.parseDouble(textbar.getText());
-				operation = "+";
+				operation = "*";
 				textbar.setText("");
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
 		}
+		//division 
 		if(e.getSource() == div) {
 			try {
 				num1 = Double.parseDouble(textbar.getText());
-				operation = "+";
+				operation = "/";
 				textbar.setText("");
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
 		}
 		
+		// result 
+		if(e.getSource() == equ) {
+			try {
+				num2 = Double.parseDouble(textbar.getText());
+				
+				if (operation.equals("+")) {
+					result = num1 + num2;
+				} else if (operation.equals("-")) {
+					result = num1 - num2;
+				} else if (operation.equals("*")) {
+					result = num1 * num2;
+				} else if (operation.equals("/")) {
+					if (num2 == 0) { 
+						throw new ArithmeticException();
+					} else {
+						result = num1 / num2;
+					}
+				}
+				textbar.setText(Double.toString(result));
+			} catch (Exception error){
+				textbar.setText("Err");
+			} finally { 
+				num1 = result;
+				num2 = 0;
+				operation = "";
+			}
+		}
+		
+		if(e.getSource() == clear) {
+			textbar.setText("");
+			num1 = 0;
+			num2 = 0;
+			operation = "";
+		}
 		
 		if(e.getSource() == deci) {
 			textbar.setText(textbar.getText().concat("."));
