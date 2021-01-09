@@ -17,7 +17,7 @@ public class Calculator implements ActionListener {
 	JPanel panel;
 	
 	double num1 = 0, num2 = 0, result = 0;
-	String operation;
+	String operation = "";
 	
 	Font textBarFont = new Font("Times New Roman",Font.PLAIN,24);
 	Font buttonFont = new Font("Times New Roman",Font.PLAIN,18);
@@ -159,9 +159,30 @@ public class Calculator implements ActionListener {
 		// add 
 		if(e.getSource() == add) {
 			try {
-				num1 = Double.parseDouble(textbar.getText());
-				operation = "+";
-				textbar.setText("");
+				if (operation.equals("/")) { 
+					num2 = Double.parseDouble(textbar.getText());
+					if (num2 == 0) {
+						num1 = 0;
+						operation = "";
+						num2 = 0;
+						throw new ArithmeticException();
+					} else { 
+						num1 = Double.parseDouble(results());
+						operation = "+";
+						num2 = 0;
+						textbar.setText("");
+					}
+				} else if (!(operation.equals(""))) {
+					num2 = Double.parseDouble(textbar.getText());
+					num1 = Double.parseDouble(results());
+					textbar.setText("");
+					operation = "+";
+					num2 = 0;
+				} else {
+					num1 = Double.parseDouble(textbar.getText());
+					operation = "+";
+					textbar.setText("");
+				}
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
@@ -171,21 +192,62 @@ public class Calculator implements ActionListener {
 			try {
 				if (textbar.getText().equals("")) {
 					textbar.setText("-");
+				} else if (operation.equals("/")) { 
+					num2 = Double.parseDouble(textbar.getText());
+					if (num2 == 0) {
+						num1 = 0;
+						operation = "";
+						num2 = 0;
+						throw new ArithmeticException();
+					} else { 
+						num1 = Double.parseDouble(results());
+						operation = "-";
+						num2 = 0;
+						textbar.setText("");
+					}
+				} else if (!(operation.equals(""))) {
+						num2 = Double.parseDouble(textbar.getText());
+						num1 = Double.parseDouble(results());
+						textbar.setText("");
+						operation = "-";
+						num2 = 0;
 				} else {
-					num1 = Double.parseDouble(textbar.getText());
-					operation = "-";
-					textbar.setText("");
+						num1 = Double.parseDouble(textbar.getText());
+						operation = "-";
+						textbar.setText("");
 				}
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
 		}
+		
 		//multiply 
 		if(e.getSource() == mul) {
 			try {
-				num1 = Double.parseDouble(textbar.getText());
-				operation = "*";
-				textbar.setText("");
+				if (operation.equals("/")) { 
+					num2 = Double.parseDouble(textbar.getText());
+					if (num2 == 0) {
+						num1 = 0;
+						operation = "";
+						num2 = 0;
+						throw new ArithmeticException();
+					} else { 
+						num1 = Double.parseDouble(results());
+						operation = "*";
+						num2 = 0;
+						textbar.setText("");
+					}
+				} else if (!(operation.equals(""))) {
+					num2 = Double.parseDouble(textbar.getText());
+					num1 = Double.parseDouble(results());
+					textbar.setText("");
+					operation = "*";
+					num2 = 0;
+				} else {
+					num1 = Double.parseDouble(textbar.getText());
+					operation = "*";
+					textbar.setText("");
+				}
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
@@ -201,44 +263,83 @@ public class Calculator implements ActionListener {
 			}
 		}
 		
-		// result 
+		// calculation
 		if(e.getSource() == equ) {
-			try {
-				num2 = Double.parseDouble(textbar.getText());
-				
-				if (operation.equals("+")) {
-					result = num1 + num2;
-				} else if (operation.equals("-")) {
-					result = num1 - num2;
-				} else if (operation.equals("*")) {
-					result = num1 * num2;
-				} else if (operation.equals("/")) {
-					if (num2 == 0) { 
-						throw new ArithmeticException();
-					} else {
-						result = num1 / num2;
-					}
-				}
-				textbar.setText(Double.toString(result));
-			} catch (Exception error){
-				textbar.setText("Err");
-			} finally { 
-				num1 = result;
-				num2 = 0;
-				operation = "";
-			}
+			equal();
 		}
 		
+		// clear all 
 		if(e.getSource() == clear) {
 			textbar.setText("");
 			num1 = 0;
 			num2 = 0;
 			operation = "";
+			result = 0;
 		}
 		
+		// adding the decimal point
 		if(e.getSource() == deci) {
 			textbar.setText(textbar.getText().concat("."));
 		}
+		
+		// Testing 
+		//System.out.println(num1);
+	}
+	
+	private void equal() { 
+		try {
+			num2 = Double.parseDouble(textbar.getText());
+			
+			if (num2 == 0 && operation.equals("/")) { 
+				throw new ArithmeticException();
+			} else if (operation.equals("")) {
+				num1 = Double.parseDouble(textbar.getText());
+				result = num1;
+			} else {
+				result = Double.parseDouble(results());
+			}
+			
+			textbar.setText(results());
+			
+		} catch (Exception error){
+			textbar.setText("Err");
+		} finally { 
+			num1 = result;
+			num2 = 0;
+			operation = "";
+		}
+		
+	}
+	
+	// removes the extra zeros after the .
+	private String simplify(String result) {
+		for(int i = result.length() - 1; i >= 0; i--) { 
+			if (result.charAt(i) == '0') {
+				result = result.substring(0, i);
+			} else if (result.charAt(i) == '.') {
+				result = result.substring(0, i);
+				break;
+			} else {
+				break;
+			}
+		}
+		return result; 
+	}
+	
+
+	private String results() {
+		double r = 0;
+		if (operation.equals("+")) {
+			r = num1 + num2;
+		} else if (operation.equals("-")) {
+			r = num1 - num2;
+		} else if (operation.equals("*")) {
+			r = num1 * num2;
+		} else if (operation.equals("/")) {
+			r = num1 / num2;
+		} 
+		
+		return simplify(String.format("%f", r));
 	}
 	
 
