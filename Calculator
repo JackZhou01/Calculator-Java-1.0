@@ -255,9 +255,177 @@ public class Calculator implements ActionListener {
 		//division 
 		if(e.getSource() == div) {
 			try {
-				num1 = Double.parseDouble(textbar.getText());
-				operation = "/";
-				textbar.setText("");
+				if (operation.equals("/")) { 
+					num2 = Double.parseDouble(textbar.getText());
+					if (num2 == 0) {
+						num1 = 0;
+						operation = "";
+						num2 = 0;
+						throw new ArithmeticException();
+					} else { 
+						num1 = Double.parseDouble(results());
+						operation = "/";
+						num2 = 0;
+						textbar.setText("");
+					}
+				} else if (!(operation.equals(""))) {
+					num2 = Double.parseDouble(textbar.getText());
+					num1 = Double.parseDouble(results());
+					textbar.setText("");
+					operation = "/";
+					num2 = 0;
+				} else {
+					num1 = Double.parseDouble(textbar.getText());
+					operation = "/";
+					textbar.setText("");
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// sine
+		if(e.getSource() == sin) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText(Double.toString(Math.sin(num1)));
+				} else { 
+					num2 = Math.sin(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());
+					textbar.setText(Double.toString(num1));
+					num2 = 0;
+					operation = "";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// cosine 
+		if(e.getSource() == cos) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText(Double.toString(Math.cos(num1)));
+				} else { 
+					num2 = Math.cos(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());					
+					textbar.setText(Double.toString(num1));
+					num2 = 0;
+					operation = "";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// tangent
+		if(e.getSource() == tan) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText(Double.toString(Math.tan(num1)));
+				} else { 
+					num2 = Math.tan(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());
+					textbar.setText(Double.toString(num1));
+					num2 = 0;
+					operation = "";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// log (base 10)
+		if(e.getSource() == log) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText(simplify(Double.toString(Math.log10(num1))));
+				} else { 
+					num2 = Math.log10(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());
+					textbar.setText(simplify(Double.toString(num1)));
+					num2 = 0;
+					operation = "";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// ln (base e)
+		if(e.getSource() == ln) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText(simplify(Double.toString(Math.log(num1))));
+				} else { 
+					num2 = Math.log(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());
+					textbar.setText(simplify(Double.toString(num1)));
+					num2 = 0;
+					operation = "";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// power (DOES NOT WORK)
+		if(e.getSource() == expt) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText("");
+				} else { 
+					num2 = Math.sqrt(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());
+					textbar.setText(simplify(Double.toString(num1)));
+					num2 = 0;
+					operation = "expt";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+
+		// factorial
+		if(e.getSource() == fact) {
+			int temp = 0;
+			try {
+				if (operation.equals("")) {
+					temp = Integer.parseInt(textbar.getText());
+					num1 = temp;
+					textbar.setText(Integer.toString(factorial(temp)));
+				} else { 
+					temp = factorial(Integer.parseInt(textbar.getText()));
+					num2 = temp;
+					num1 = Double.parseDouble(results());
+					textbar.setText(simplify(Double.toString(num1)));
+					num2 = 0;
+					operation = "";
+				}
+			} catch (Exception error){
+				textbar.setText("Err");
+			}
+		}
+		
+		// square root
+		if(e.getSource() == sqrt) {
+			try {
+				if (operation.equals("")) {
+					num1 = Double.parseDouble(textbar.getText());
+					textbar.setText(simplify(Double.toString(Math.sqrt(num1))));
+				} else { 
+					num2 = Math.sqrt(Double.parseDouble(textbar.getText()));
+					num1 = Double.parseDouble(results());
+					textbar.setText(simplify(Double.toString(num1)));
+					num2 = 0;
+					operation = "";
+				}
 			} catch (Exception error){
 				textbar.setText("Err");
 			}
@@ -270,11 +438,7 @@ public class Calculator implements ActionListener {
 		
 		// clear all 
 		if(e.getSource() == clear) {
-			textbar.setText("");
-			num1 = 0;
-			num2 = 0;
-			operation = "";
-			result = 0;
+			clear();
 		}
 		
 		// adding the decimal point
@@ -286,6 +450,7 @@ public class Calculator implements ActionListener {
 		//System.out.println(num1);
 	}
 	
+	// when the = is pressed 
 	private void equal() { 
 		try {
 			num2 = Double.parseDouble(textbar.getText());
@@ -326,7 +491,7 @@ public class Calculator implements ActionListener {
 		return result; 
 	}
 	
-
+	// to calculate the values by applying current operation
 	private String results() {
 		double r = 0;
 		if (operation.equals("+")) {
@@ -342,5 +507,21 @@ public class Calculator implements ActionListener {
 		return simplify(String.format("%f", r));
 	}
 	
+	// AC
+	private void clear() { 
+		textbar.setText("");
+		num1 = 0;
+		num2 = 0;
+		operation = "";
+		result = 0;
+	}
 
+	private int factorial(int n) { 
+		int r = 1;
+		while (n > 0) { 
+			r *= n;
+			n --;
+		}
+		return r;
+	}
 }
