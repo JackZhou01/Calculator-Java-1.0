@@ -41,7 +41,7 @@ public class Calculator implements ActionListener {
 		panel.setLayout(new GridLayout(5,5,10,10));
 		//panel.setBackground(Color.BLUE);
 		
-		
+		 
 		panel.add(fact);
 		panel.add(sin);
 		panel.add(cos);
